@@ -30,7 +30,7 @@ app.get('/', function(request, response) {
     else{
 		  var collection = db.collection("simple_document_insert_collection_no_safe");
 		  // Insert a single document
-		  collection.insert({hello:'world_no_safe'});
+		  //collection.insert({hello:'world_no_safe'});
 
 		  // Wait for a second before finishing up, to ensure we have written the item to disk
 		  setTimeout(function() {
