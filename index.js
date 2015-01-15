@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
 	//console.log("request");
-	
+	/*
 		var Db = require('mongodb').Db,
 		    MongoClient = require('mongodb').MongoClient,
 		    Server = require('mongodb').Server,
@@ -43,9 +43,9 @@ app.get('/', function(request, response) {
 		  }, 100);
 		}
 		});
-
+*/
 		var mongojs = require('mongojs');
-		db = mongojs(connection_string);
+		var db = mongojs(connection_string);
 		var collection = db.collection("simple_document_insert_collection_no_safe");
 		setTimeout(function() {
 
