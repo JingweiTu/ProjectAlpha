@@ -44,6 +44,18 @@ app.get('/', function(request, response) {
 		}
 		});
 
+		var mongojs = require('mongojs');
+		db = mongojs(connection_string);
+		var collection = db.collection("simple_document_insert_collection_no_safe");
+		setTimeout(function() {
+
+		    // Fetch the document
+		    collection.findOne({hello:'world_no_safe'}, function(err, item) {
+		    	console.log(item);
+		      db.close();
+		    })
+		  }, 100);
+
   //response.send('Hello World!')
   response.sendFile('public/frontpage.html', {root: __dirname });
 })
