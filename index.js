@@ -45,7 +45,7 @@ app.get('/', function(request, response) {
 		});
 
   //response.send('Hello World!')
-  response.sendFile('frontpage.html', {root: __dirname });
+  response.sendFile('public/frontpage.html', {root: __dirname });
 })
 
 app.listen(app.get('port'), function() {
