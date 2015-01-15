@@ -7,15 +7,8 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
 	//console.log("request");
-
-  //response.send('Hello World!')
-  response.sendFile('public/frontpage.html', {root: __dirname });
-})
-
-app.get('/login.html', function(request, response) {
-
-
-var Db = require('mongodb').Db,
+	
+		var Db = require('mongodb').Db,
 		    MongoClient = require('mongodb').MongoClient,
 		    Server = require('mongodb').Server,
 		    ReplSetServers = require('mongodb').ReplSetServers,
@@ -37,21 +30,27 @@ var Db = require('mongodb').Db,
     else{
 		  var collection = db.collection("simple_document_insert_collection_no_safe");
 		  // Insert a single document
-		  collection.insert({hello:'world_no_safe'});
+		  //collection.insert({hello:'world_no_safe'});
 
 		  // Wait for a second before finishing up, to ensure we have written the item to disk
 		  setTimeout(function() {
 
 		    // Fetch the document
 		    collection.findOne({hello:'world_no_safe'}, function(err, item) {
-		    	response.send(item);
+		    	console.log(item);
 		      db.close();
 		    })
 		  }, 100);
 		}
 		});
 
-	//respone.sendFile('public/login.html');
+  //response.send('Hello World!')
+  response.sendFile('public/frontpage.html', {root: __dirname });
+})
+
+app.get('/login.html', function(request, response) {
+
+	respone.sendFile('public/login.html');
 
 });
 
