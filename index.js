@@ -91,6 +91,12 @@ app.post('/login', function (req, res) {
   }
 });
 
+//signup route
+app.post('/signup', function (req, res) {
+  var post = req.body;
+  res.send(post);
+});
+
 //logout route
 app.get('/logout', function (req, res) {
   delete req.session.user_id;

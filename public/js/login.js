@@ -65,7 +65,6 @@ function login(){
 });
 }
 
-
 //request for signing up
 
 function signup(){
@@ -78,18 +77,21 @@ function signup(){
      type: "POST",
      contentType: "application/json",
      dataType: "json",
-     url: "/users/signup/",
-     data: JSON.stringify({name : 'myname', email : 'myemail', password : 'pass'})
+     url: "/signup",
+     data: JSON.stringify({username : name, email : email, password : pass})
    }).done(function( msg ) {
          debug = msg;
          console.log(msg)
+         /*
          if (msg['status'] == 0){
           alert(msg['message']);
          }
          else{
           console.log('success');
-          //add a redirect here to profile page
+          window.location.href = "/users/dashboard/";
+          //window.location.replace("/users/dashboard");
          }
        });
+*/
 }
 
