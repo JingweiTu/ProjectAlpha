@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
 	//console.log("request");
-	
+	/*
 		var Db = require('mongodb').Db,
 		    MongoClient = require('mongodb').MongoClient,
 		    Server = require('mongodb').Server,
@@ -43,6 +43,18 @@ app.get('/', function(request, response) {
 		  }, 100);
 		}
 		});
+*/
+		var mongojs = require('mongojs');
+		var db = mongojs(connection_string);
+		var collection = db.collection("simple_document_insert_collection_no_safe");
+		setTimeout(function() {
+
+		    // Fetch the document
+		    collection.findOne({hello:'world_no_safe'}, function(err, item) {
+		    	console.log(item);
+		      db.close();
+		    })
+		  }, 100);
 
   //response.send('Hello World!')
   response.sendFile('public/frontpage.html', {root: __dirname });
