@@ -94,6 +94,7 @@ app.post('/login', function (req, res) {
 //signup route
 app.post('/signup', function (req, res) {
   var post = req.body;
+  console.log(post);
   res.send(post);
 });
 
