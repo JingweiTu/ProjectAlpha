@@ -48,6 +48,12 @@ app.get('/', function(request, response) {
   response.sendFile('public/frontpage.html', {root: __dirname });
 })
 
+app.get('/login.html', function(request, response) {
+
+	respone.sendFile('public/login.html');
+
+});
+
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 })
