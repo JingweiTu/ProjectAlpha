@@ -7,8 +7,15 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
 	//console.log("request");
-	
-		var Db = require('mongodb').Db,
+
+  //response.send('Hello World!')
+  response.sendFile('public/frontpage.html', {root: __dirname });
+})
+
+app.get('/login.html', function(request, response) {
+
+
+var Db = require('mongodb').Db,
 		    MongoClient = require('mongodb').MongoClient,
 		    Server = require('mongodb').Server,
 		    ReplSetServers = require('mongodb').ReplSetServers,
@@ -37,20 +44,14 @@ app.get('/', function(request, response) {
 
 		    // Fetch the document
 		    collection.findOne({hello:'world_no_safe'}, function(err, item) {
-		    	console.log(item);
+		    	response.send(item);
 		      db.close();
 		    })
 		  }, 100);
 		}
 		});
 
-  //response.send('Hello World!')
-  response.sendFile('public/frontpage.html', {root: __dirname });
-})
-
-app.get('/login.html', function(request, response) {
-
-	respone.sendFile('public/login.html');
+	//respone.sendFile('public/login.html');
 
 });
 
