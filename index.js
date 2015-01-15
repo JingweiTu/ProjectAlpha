@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
 	//console.log("request");
-	/*
+	
 		var Db = require('mongodb').Db,
 		    MongoClient = require('mongodb').MongoClient,
 		    Server = require('mongodb').Server,
@@ -19,7 +19,7 @@ app.get('/', function(request, response) {
 		    Code = require('mongodb').Code,
 		    BSON = require('mongodb').pure().BSON,
 		    assert = require('assert');
-*/
+
 		var db = new Db('versionOne', new Server('localhost', 27017));
 		// Fetch a collection to insert document into
 		db.open(function(err, db) {
