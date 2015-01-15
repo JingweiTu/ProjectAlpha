@@ -1,11 +1,13 @@
 var express = require('express')
 var app = express();
+var connection_string = '127.0.0.1:27017/versionOne';
 
 app.set('port', (process.env.PORT || 8080))
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
 	//console.log("request");
+	/*
 		var Db = require('mongodb').Db,
 		    MongoClient = require('mongodb').MongoClient,
 		    Server = require('mongodb').Server,
@@ -17,8 +19,8 @@ app.get('/', function(request, response) {
 		    Code = require('mongodb').Code,
 		    BSON = require('mongodb').pure().BSON,
 		    assert = require('assert');
-
-		var db = new Db('test', new Server('localhost', 27017));
+*/
+		var db = new Db('versionOne', new Server('localhost', 27017));
 		// Fetch a collection to insert document into
 		db.open(function(err, db) {
 
@@ -28,7 +30,7 @@ app.get('/', function(request, response) {
     else{
 		  var collection = db.collection("simple_document_insert_collection_no_safe");
 		  // Insert a single document
-		  //collection.insert({hello:'world_no_safe'});
+		  collection.insert({hello:'world_no_safe'});
 
 		  // Wait for a second before finishing up, to ensure we have written the item to disk
 		  setTimeout(function() {
@@ -36,8 +38,6 @@ app.get('/', function(request, response) {
 		    // Fetch the document
 		    collection.findOne({hello:'world_no_safe'}, function(err, item) {
 		    	console.log(item);
-		      assert.equal(null, err);
-		      assert.equal('world_no_safe', item.hello);
 		      db.close();
 		    })
 		  }, 100);
