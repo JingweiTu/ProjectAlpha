@@ -81,7 +81,7 @@ function signup(){
      data: JSON.stringify({username : name, email : email, password : pass})
    }).done(function( msg ) {
          debug = msg;
-         console.log(msg)
+         console.log(msg);
          /*
          if (msg['status'] == 0){
           alert(msg['message']);
@@ -91,7 +91,7 @@ function signup(){
           window.location.href = "/users/dashboard/";
           //window.location.replace("/users/dashboard");
          }
+         */
        });
-*/
 }
 
