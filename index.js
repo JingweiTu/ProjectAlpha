@@ -3,11 +3,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var dbConfig = require('./db');
-var mongoose = require('mongoose');
-// Connect to DB
-mongoose.connect(dbConfig.url);
-
 var app = express();
 var connection_string = '127.0.0.1:27017/versionOne';
 var passport = require('passport');
@@ -33,7 +28,19 @@ app.use(passport.session());
 var initPassport = require('./passport/init');
 initPassport(passport);
 
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
 
+module.exports = app;
 
 app.get('/', function(request, response) {
     //console.log("request");
