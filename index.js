@@ -130,7 +130,7 @@ var isAuthenticated = function (req, res, next) {
 	/* Handle Registration POST */
 	 app.post('/signup', passport.authenticate('signup', {
 		successRedirect: '/',
-		failureRedirect: '/signup',
+		failureRedirect: '/klsk',
 		failureFlash : true  
 	}));
 
