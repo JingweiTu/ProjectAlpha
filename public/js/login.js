@@ -50,7 +50,7 @@ function login(){
     type: "POST",
     contentType: "application/json",
     dataType: "json",
-    url: "/users/login/",
+    url: "/login/",
     data: JSON.stringify({username : email, password : pass})
 }).done(function( msg ) {
     debug = msg;
