@@ -1,7 +1,7 @@
 var express = require('express');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var session = require('express-session');
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
 
 var app = express();
 var connection_string = '127.0.0.1:27017/versionOne';
@@ -27,8 +27,6 @@ app.use(passport.session());
 // Initialize Passport
 var initPassport = require('./passport/init');
 initPassport(passport);
-
-
 
 app.get('/', function(request, response) {
     //console.log("request");
