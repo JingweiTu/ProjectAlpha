@@ -15,7 +15,11 @@ app.use(express.static(__dirname + '/public'))
 app.use(express.static('public'));
 app.use(cookieParser());
 app.use(bodyParser());
-app.use(express.session({ secret: 'snapGur' }));
+app.use(session({
+  secret: 'snapGur',
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
