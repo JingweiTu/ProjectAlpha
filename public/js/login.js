@@ -73,11 +73,6 @@ function signup(){
   var email = $(".emailBox").val();
   var pass = $(".passwordBox").val();
 
-  postRequest("/signup", JSON.stringify({username : name, email : email, password : pass}), function(data){
-    console.log(data);
-    console.log("blah");
-  });
-
   $.ajax({
      type: "POST",
      contentType: "application/json",
@@ -100,40 +95,5 @@ function signup(){
        });
 }
 
-function connectionExists() {
-    var xhr = new XMLHttpRequest();
-    var file = "http://www.akandola.com/contact.php";
 
-    xhr.open('HEAD', file, false);
-
-    try {
-        xhr.send();
-
-        return xhr.status >= 200 && xhr.status < 304;
-    } catch (e) {
-        return false;
-    }
-}
-
-function postRequest(url, params, funct, ajaxLoaderElement) {
-    var element;
-    var ajaxLoad = (arguments.length === 4);
-    if (connectionExists()) {
-        if (ajaxLoad) {
-            var element = document.getElementById(ajaxLoaderElement);
-            document.getElementById(ajaxLoaderElement).parentNode.replaceChild(loadIcon, element);
-        }
-        $.post(url, params,
-            function(data){
-                if (ajaxLoad) {
-                    loadIcon.parentNode.replaceChild(element, loadIcon);
-                    document.getElementById('body').appendChild(loadIcon);
-                }
-                funct(data);
-            });
-    } else {
-        alert("There seems to be a problem connecting to our servers.");
-        return;
-    }
-}
 
