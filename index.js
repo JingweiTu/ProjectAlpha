@@ -19,7 +19,8 @@ app.use(session({
   secret: 'snapGur',
   resave: false,
   saveUninitialized: true
-}))
+}));
+app.use(expressSession({secret: 'snapGur'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
