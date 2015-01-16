@@ -1,7 +1,8 @@
 var express = require('express');
 var session = require('express-session');
-var cookieParser = require("cookieParser");
-var bodyParser = require("bodyParser");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+
 var app = express();
 var connection_string = '127.0.0.1:27017/versionOne';
 var passport = require('passport');
