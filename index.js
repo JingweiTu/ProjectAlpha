@@ -13,8 +13,8 @@ app.set('port', (process.env.PORT || 8080))
 app.use(express.static(__dirname + '/public'))
 
 app.use(express.static('public'));
-app.use(express.cookieParser());
-app.use(express.bodyParser());
+app.use(cookieParser());
+app.use(bodyParser());
 app.use(express.session({ secret: 'snapGur' }));
 app.use(passport.initialize());
 app.use(passport.session());
