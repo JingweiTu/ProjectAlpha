@@ -51,7 +51,7 @@ function login(){
     contentType: "application/json",
     dataType: "json",
     url: "/users/login/",
-    data: JSON.stringify({email : email, password : pass})
+    data: JSON.stringify({username : email, password : pass})
 }).done(function( msg ) {
     debug = msg;
     console.log(msg)

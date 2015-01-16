@@ -1,9 +1,20 @@
 var express = require('express')
 var app = express();
 var connection_string = '127.0.0.1:27017/versionOne';
+var passport = require('passport');
+var expressSession = require('express-session');
+var router = express.Router();
 
 app.set('port', (process.env.PORT || 8080))
 app.use(express.static(__dirname + '/public'))
+
+app.use(express.static('public'));
+app.use(express.cookieParser());
+app.use(express.bodyParser());
+app.use(express.session({ secret: 'snapGur' }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(app.router);
 
 app.get('/', function(request, response) {
 	//console.log("request");
@@ -61,9 +72,7 @@ app.get('/', function(request, response) {
 })
 
 app.get('/login.html', function(request, response) {
-
 	respone.sendFile('public/login.html');
-
 });
 
 app.listen(app.get('port'), function() {
@@ -80,29 +89,36 @@ function checkAuth(req, res, next) {
   }
 }
 
-//login route
-app.post('/login', function (req, res) {
-  var post = req.body;
-  if (post.user === 'john' && post.password === 'johnspassword') {
-    req.session.user_id = johns_user_id_here;
-    res.redirect('/my_secret_page');
-  } else {
-    res.send('Bad user/pass');
-  }
-});
 
-//signup route
-app.post('/signup', function (req, res) {
-  var post = req.body;
-  console.log(post);
-  res.send(post);
-});
+router.get('/', function(req, res) {
+    	// Display the Login page with any flash message, if any
+		res.render('index', { message: req.flash('message') });
+	});
 
-//logout route
-app.get('/logout', function (req, res) {
-  delete req.session.user_id;
-  res.redirect('/login');
-});  
+	/* Handle Login POST */
+	router.post('/login', passport.authenticate('login', {
+		successRedirect: '/',
+		failureRedirect: '/login.html',
+		failureFlash : true  
+	}));
+
+	/* GET Registration Page */
+	router.get('/signup', function(req, res){
+		res.render('register',{message: req.flash('message')});
+	});
+
+	/* Handle Registration POST */
+	router.post('/signup', passport.authenticate('signup', {
+		successRedirect: '/home',
+		failureRedirect: '/signup',
+		failureFlash : true  
+	}));
+
+	/* Handle Logout */
+	router.get('/signout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
 
 //example
 app.get('/my_secret_page', checkAuth, function (req, res) {
