@@ -1,4 +1,7 @@
-var express = require('express')
+var express = require('express');
+var session = require('express-session');
+var cookieParser = require("cookieParser");
+var bodyParser = require("bodyParser");
 var app = express();
 var connection_string = '127.0.0.1:27017/versionOne';
 var passport = require('passport');
@@ -9,6 +12,8 @@ app.set('port', (process.env.PORT || 8080))
 app.use(express.static(__dirname + '/public'))
 
 app.use(express.static('public'));
+app.use(express.cookieParser());
+app.use(express.bodyParser());
 app.use(express.session({ secret: 'snapGur' }));
 app.use(passport.initialize());
 app.use(passport.session());
