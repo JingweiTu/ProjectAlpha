@@ -27,15 +27,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 var passport = require('passport');
 var expressSession = require('express-session');
 // TODO - Why Do we need this key ?
-app.use(expressSession({
-    secret: 'snapGur',
-    // name: cookie_name,
-    // store: sessionStore, // connect-mongo session store
-    proxy: true,
-    resave: false,
-    saveUninitialized: false
-}));
-app.use(expressSession({secret: 'snapGur'}));
+// app.use(expressSession({
+//     secret: 'snapGur',
+//     // name: cookie_name,
+//     // store: sessionStore, // connect-mongo session store
+//     proxy: true,
+//     resave: false,
+//     saveUninitialized: false
+// }));
+// app.use(expressSession({secret: 'snapGur'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
