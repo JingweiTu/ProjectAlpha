@@ -140,6 +140,11 @@ var isAuthenticated = function (req, res, next) {
 		res.redirect('/');
 	});
 
+	 app.post('/test', function(req, res) {
+	 	console.log("fish cakes for breakfast");
+		res.send("done");
+	});
+
 //example
 app.get('/my_secret_page', checkAuth, function (req, res) {
   res.send('if you are viewing this page it means you are logged in');

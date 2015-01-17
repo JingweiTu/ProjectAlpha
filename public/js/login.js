@@ -11,6 +11,18 @@ var nameDiv;
 var curState;
 
  $( document ).ready(function() {
+
+    console.log("making request");
+    $.ajax({
+    type: "POST",
+    contentType: "application/json",
+    dataType: "json",
+    url: "/test",
+}).done(function( msg ) {
+    debug = msg;
+    console.log(msg)
+    console.log("done");
+});
     
   loginButton = $(".loginButton");
   signupButton = $(".signupButton");
