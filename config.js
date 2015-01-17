@@ -1,4 +1,3 @@
-[core]
-	repositoryformatversion = 0
-	filemode = true
-	bare = true
+module.exports = {
+  "db": “YOUR_ORCHESTRATE_API_KEY”
+}
