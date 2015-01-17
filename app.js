@@ -29,8 +29,8 @@ var expressSession = require('express-session');
 // TODO - Why Do we need this key ?
 app.use(expressSession({
     secret: 'snapGur',
-    name: cookie_name,
-    store: sessionStore, // connect-mongo session store
+    // name: cookie_name,
+    // store: sessionStore, // connect-mongo session store
     proxy: true,
     resave: true,
     saveUninitialized: true
