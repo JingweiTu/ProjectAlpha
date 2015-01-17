@@ -5,12 +5,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// var dbConfig = require('./db');
-// var mongoose = require('mongoose');
-// // Connect to DB
-// mongoose.connect(dbConfig.url);
+var dbConfig = require('./db');
+var mongoose = require('mongoose');
+// Connect to DB
+mongoose.connect(dbConfig.url);
 
 var app = express();
+
+app.set('port', process.env.PORT || 8080);
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
