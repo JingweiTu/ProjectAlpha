@@ -32,8 +32,8 @@ app.use(expressSession({
     // name: cookie_name,
     // store: sessionStore, // connect-mongo session store
     proxy: true,
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false
 }));
 app.use(expressSession({secret: 'snapGur'}));
 app.use(passport.initialize());
