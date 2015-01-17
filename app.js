@@ -28,10 +28,13 @@ var passport = require('passport');
 var expressSession = require('express-session');
 // TODO - Why Do we need this key ?
 app.use(expressSession({
-  secret: 'snapGur',
-  resave: false,
-  saveUninitialized: true
-}))
+    secret: 'snapGur',
+    name: cookie_name,
+    store: sessionStore, // connect-mongo session store
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(expressSession({secret: 'snapGur'}));
 app.use(passport.initialize());
 app.use(passport.session());
