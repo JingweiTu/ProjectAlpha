@@ -1,158 +1,146 @@
-var express = require('express'),
-    exphbs  = require('express3-handlebars'),
-    passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    TwitterStrategy = require('passport-twitter'),
-    GoolgeStrategy = require('passport-google'),
-    FacebookStrategy = require('passport-facebook');
-    
-
-var config = require('./config.js'), //config file contains all tokens and other private info
-    funct = require('./functions.js');
+var express = require('express');
+var session = require('express-session');
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
 
 var app = express();
+var connection_string = '127.0.0.1:27017/versionOne';
+var passport = require('passport');
+var expressSession = require('express-session');
+var router = express.Router();
 
-//===============PASSPORT=================
+app.set('port', (process.env.PORT || 8080))
+app.use(express.static(__dirname + '/public'))
 
-// Passport session setup.
-passport.serializeUser(function(user, done) {
-  console.log("serializing " + user.username);
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  console.log("deserializing " + obj);
-  done(null, obj);
-});
-
-// Use the LocalStrategy within Passport to login users.
-passport.use('local-signin', new LocalStrategy(
-  {passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localAuth(username, password)
-    .then(function (user) {
-      if (user) {
-        console.log("LOGGED IN AS: " + user.username);
-        req.session.success = 'You are successfully logged in ' + user.username + '!';
-        done(null, user);
-      }
-      if (!user) {
-        console.log("COULD NOT LOG IN");
-        req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-        done(null, user);
-      }
-    })
-    .fail(function (err){
-      console.log(err.body);
-    });
-  }
-));
-
-// Use the LocalStrategy within Passport to Register/"signup" users.
-passport.use('local-signup', new LocalStrategy(
-  {passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localReg(username, password)
-    .then(function (user) {
-      if (user) {
-        console.log("REGISTERED: " + user.username);
-        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-        done(null, user);
-      }
-      if (!user) {
-        console.log("COULD NOT REGISTER");
-        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-        done(null, user);
-      }
-    })
-    .fail(function (err){
-      console.log(err.body);
-    });
-  }
-));
-
-// Simple route middleware to ensure user is authenticated.
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  req.session.error = 'Please sign in!';
-  res.redirect('/signin');
-}
-
-
-//===============EXPRESS=================
-
-// Configure Express
-app.use(express.logger());
-app.use(express.cookieParser());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.session({ secret: 'supernova' }));
+app.use(express.static('public'));
+app.use(cookieParser());
+app.use(bodyParser());
+app.use(session({
+  secret: 'snapGur',
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Session-persisted message middleware
-app.use(function(req, res, next){
-  var err = req.session.error,
-      msg = req.session.notice,
-      success = req.session.success;
+// Initialize Passport
+var initPassport = require('./passport/init');
+initPassport(passport);
 
-  delete req.session.error;
-  delete req.session.success;
-  delete req.session.notice;
+app.get('/', function(request, response) {
+	//console.log("request");
+	/*
+		var Db = require('mongodb').Db,
+		    MongoClient = require('mongodb').MongoClient,
+		    Server = require('mongodb').Server,
+		    ReplSetServers = require('mongodb').ReplSetServers,
+		    ObjectID = require('mongodb').ObjectID,
+		    Binary = require('mongodb').Binary,
+		    GridStore = require('mongodb').GridStore,
+		    Grid = require('mongodb').Grid,
+		    Code = require('mongodb').Code,
+		    BSON = require('mongodb').pure().BSON,
+		    assert = require('assert');
 
-  if (err) res.locals.error = err;
-  if (msg) res.locals.notice = msg;
-  if (success) res.locals.success = success;
+		var db = new Db('versionOne', new Server('localhost', 27017));
+		// Fetch a collection to insert document into
+		db.open(function(err, db) {
 
-  next();
+		if (err) {
+        	console.log(err);
+    	}
+    else{
+		  var collection = db.collection("simple_document_insert_collection_no_safe");
+		  // Insert a single document
+		  //collection.insert({hello:'world_no_safe'});
+
+		  // Wait for a second before finishing up, to ensure we have written the item to disk
+		  setTimeout(function() {
+
+		    // Fetch the document
+		    collection.findOne({hello:'world_no_safe'}, function(err, item) {
+		    	console.log(item);
+		      db.close();
+		    })
+		  }, 100);
+		}
+		});
+*/
+		var mongojs = require('mongojs');
+		var db = mongojs(connection_string);
+		var collection = db.collection("simple_document_insert_collection_no_safe");
+		setTimeout(function() {
+
+		    // Fetch the document
+		    collection.findOne({hello:'world_no_safe'}, function(err, item) {
+		    	console.log(item);
+		      db.close();
+		    })
+		  }, 100);
+
+  //response.send('Hello World!')
+  response.sendFile('public/frontpage.html', {root: __dirname });
+})
+
+app.get('/login.html', function(request, response) {
+	respone.sendFile('public/login.html');
 });
 
-app.use(app.router);
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'))
+})
 
-// Configure express to use handlebars templates
-var hbs = exphbs.create({
-    defaultLayout: 'main',
+//Authorization functions
+function checkAuth(req, res, next) {
+  if (!req.session.user_id) {
+    res.send('You are not authorized to view this page');
+  } else {
+  	res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+  }
+}
+
+var isAuthenticated = function (req, res, next) {
+	// if user is authenticated in the session, call the next() to call the next request handler 
+	// Passport adds this method to request object. A middleware is allowed to add properties to
+	// request and response objects
+	if (req.isAuthenticated())
+		return next();
+	// if the user is not authenticated then redirect him to the login page
+	res.redirect('/');
+}
+
+ app.get('/', function(req, res) {
+    	// Display the Login page with any flash message, if any
+		res.render('index', { message: req.flash('message') });
+	});
+
+	/* Handle Login POST */
+	 app.post('/login', passport.authenticate('login', {
+		successRedirect: '/',
+		failureRedirect: '/login.html',
+		failureFlash : true  
+	}));
+
+	/* GET Registration Page */
+	 app.get('/signup', function(req, res){
+		res.render('register',{message: req.flash('message')});
+	});
+
+	/* Handle Registration POST */
+	 app.post('/signup', passport.authenticate('signup', {
+		successRedirect: '/',
+		failureRedirect: '/klsk',
+		failureFlash : true  
+	}));
+
+	/* Handle Logout */
+	 app.get('/signout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
+
+//example
+app.get('/my_secret_page', checkAuth, function (req, res) {
+  res.send('if you are viewing this page it means you are logged in');
 });
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
-
-
-//===============ROUTES=================
-//displays our homepage
-app.get('/', function(req, res){
-  res.render('home', {user: req.user});
-});
-
-//displays our signup page
-app.get('/signin', function(req, res){
-  res.render('signin');
-});
-
-//sends the request through our local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/local-reg', passport.authenticate('local-signup', {
-  successRedirect: '/',
-  failureRedirect: '/signin'
-  })
-);
-
-//sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.post('/login', passport.authenticate('local-signin', { 
-  successRedirect: '/',
-  failureRedirect: '/signin'
-  })
-);
-
-//logs user out of site, deleting them from the session, and returns to homepage
-app.get('/logout', function(req, res){
-  var name = req.user.username;
-  console.log("LOGGIN OUT " + req.user.username)
-  req.logout();
-  res.redirect('/');
-  req.session.notice = "You have successfully been logged out " + name + "!";
-});
-
-
-//===============PORT=================
-var port = process.env.PORT || 5000;
-app.listen(port);
-console.log("listening on " + port + "!");
