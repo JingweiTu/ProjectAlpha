@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var passport = require('passport');
 var expressSession = require('express-session');
 // TODO - Why Do we need this key ?
-app.use(session({
+app.use(expressSession({
   secret: 'snapGur',
   resave: false,
   saveUninitialized: true
