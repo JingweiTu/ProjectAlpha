@@ -1,0 +1,2 @@
+#!/bin/sh GIT_WORK_TREE=/home/ubuntu/www export GIT_WORK_TREE git checkout -f - See more at: http://cuppster.com/2011/05/12/diy-node-js-server-on-amazon-ec2/#sthash.tq3NAlP2.dpuf
+
